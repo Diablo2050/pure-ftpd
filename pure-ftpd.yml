@@ -1,0 +1,16 @@
+---
+- hosts: all
+  gather_facts: no
+  vars_prompt:
+    - name: pure_ftpd_user
+      prompt: "Please enter system ftp user name"
+      private: no
+    - name: pure_ftpd_group
+      prompt: "Please enter system ftp group name"
+      private: no
+    - name: pure_ftpd_vuser
+      prompt: "Please enter virtual ftp user name"
+      private: no  
+  roles:
+    - pure-ftpd
+

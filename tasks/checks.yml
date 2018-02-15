@@ -1,0 +1,17 @@
+- name: check for package
+  command: rpm -q pure-ftpd
+  ignore_errors: yes
+  register: result
+- debug: msg="stdout={{ result.stdout }}"
+
+- name: check port 21
+  shell: netstat -ntulp | grep pure-ftpd
+  ignore_errors: yes
+  register: port
+- debug: msg="stdout={{ port.stdout }}"
+
+- name: checking FTP system user and group
+  shell: grep {{ pure_ftpd_user }} /etc/passwd && grep {{ pure_ftpd_group }} /etc/group
+  ignore_errors: yes
+  register: system
+- debug: msg="stdout={{ system.stdout }}"

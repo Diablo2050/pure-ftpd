@@ -1,0 +1,9 @@
+---
+- name: first check all
+  include: checks.yml
+- name: install dependencies
+  include: pkg.yml
+- name: install pure-ftpd
+  include: install-pureftpd.yml
+- name: create vuser
+  include: virtual_user.yml

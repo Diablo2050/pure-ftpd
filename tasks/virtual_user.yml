@@ -1,0 +1,19 @@
+- name: create password
+  shell: mkpasswd -l 20
+  register: pure_ftpd_vuser_pass
+- debug: msg="use this password {{ pure_ftpd_vuser_pass.stdout }}"
+- name: create vuser home dir
+  file:
+    path: /home/{{ pure_ftpd_user }}/{{ pure_ftpd_vuser }} 
+    state: directory 
+    owner: '{{ pure_ftpd_user }}'
+    group: '{{ pure_ftpd_group }}'
+
+- name: create new vuser
+  expect:
+    command: pure-pw useradd {{ pure_ftpd_vuser }} -u {{ pure_ftpd_user }} -g  {{ pure_ftpd_group }} -d /home/{{ pure_ftpd_user }}/{{ pure_ftpd_vuser }} -m
+    responses:
+      (?i)password: "{{ pure_ftpd_vuser_pass.stdout }}"
+      (?i)enter it again: "{{ pure_ftpd_vuser_pass.stdout }}"
+- name: rebuild puredb
+  command: sudo pure-pw mkdb

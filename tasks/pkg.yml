@@ -1,0 +1,6 @@
+- name: install pip
+  yum: name=python-pip state=latest
+- name: install pexpect
+  pip: name=pexpect state=latest
+- name: install mkpasswd
+  yum: name=expect state=latest

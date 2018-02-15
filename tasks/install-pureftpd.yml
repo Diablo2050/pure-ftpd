@@ -1,0 +1,11 @@
+---
+- name: install pure-ftpd
+  yum: name=pure-ftpd state=latest
+  when: (result.rc) and (port.rc) !=0
+- name: copy over the config file
+  copy: src="{{ role_path }}/files/pure-ftpd.conf" dest=/etc/pure-ftpd/pure-ftpd.conf
+- name: create pure-ftp system user
+  user: name={{ pure_ftpd_user }} state=present createhome=yes shell=/sbin/nologin
+  when: system.rc !=0
+  notify:
+  - restart pure-ftpd
