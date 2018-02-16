@@ -7,5 +7,14 @@
 - name: create pure-ftp system user
   user: name={{ pure_ftpd_user }} state=present createhome=yes shell=/sbin/nologin
   when: system.rc !=0
+- name: create password
+  shell: mkpasswd -l 20
+  register: pass
+- name: change user pass
+  expect:
+    command: passwd {{ pure_ftpd_user }}
+    responses:
+      (?i)New password: "{{ pass.stdout }}"
+      (?i)Retype new password: "{{ pass.stdout }}"
   notify:
   - restart pure-ftpd
